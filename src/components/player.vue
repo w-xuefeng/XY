@@ -154,7 +154,7 @@
             <scroll class="lyric-wrapper" ref="lyricList" :data="currentLyric && currentLyric.lines">  
               <div>  
                 <div class="lyric LRCContainer">  
-                  <p v-for="(line,index) in currentLyric.lines" ref="lyricLine" :class="{'current': currentLineNum === index}" class="text">{{line.txt}}</p>
+                  <p v-for="(line,index) in currentLyric.lines" ref="lyricLine" :class="{'current': currentLineNum === index}" class="text" :key="index">{{line.txt}}</p>
                   <p v-if="!currentLyric.lines">{{curSongLRCText}}</p>
                 </div>
               </div>  
@@ -216,38 +216,42 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Swiper from 'swiper'
-import Lyric from 'lyric-parser'
-import Scroll from './scroll'
-import 'swiper/dist/css/swiper.min.css'
+import axios from "axios";
+import Swiper from "swiper";
+import Lyric from "lyric-parser";
+import Scroll from "./scroll";
+import "swiper/dist/css/swiper.min.css";
 export default {
-  name: 'player',
-  data () {
+  name: "player",
+  data() {
     return {
-      HOST: 'https://api.xy.wangxuefeng.com.cn',
-      PART: '443',
-      Apptitle: '寻音 | SNP',
-      search: '',
+      HOST: "https://api.xy.wangxuefeng.com.cn",
+      PART: "443",
+      Apptitle: "寻音 | SNP",
+      search: "",
       searching: false,
-      searchingText: '正在搜索中...',
-      searchResText: '搜索结果:',
+      searchingText: "正在搜索中...",
+      searchResText: "搜索结果:",
       isSearch: false,
-      songList: [{
-        id: 499274374,
-        name: "纯白",
-        artists: [{
-          id: 12025552,
-          name: "双笙",
-          picUrl: null,
-          alias: [],
-          albumSize: 0,
-          picId: 0,
-          img1v1Url: "http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
-          img1v1: 0,
-          trans: null
-            }],
-        album: {
+      songList: [
+        {
+          id: 499274374,
+          name: "纯白",
+          artists: [
+            {
+              id: 12025552,
+              name: "双笙",
+              picUrl: null,
+              alias: [],
+              albumSize: 0,
+              picId: 0,
+              img1v1Url:
+                "http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+              img1v1: 0,
+              trans: null
+            }
+          ],
+          album: {
             id: 35975119,
             name: "纯白",
             artist: {
@@ -257,7 +261,8 @@ export default {
               alias: [],
               albumSize: 0,
               picId: 0,
-              img1v1Url: "http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+              img1v1Url:
+                "http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
               img1v1: 0,
               trans: null
             },
@@ -266,295 +271,318 @@ export default {
             copyrightId: 558010,
             status: 0,
             picId: 19147994998024092
-        },
-        duration: 311268,
-        copyrightId: 558010,
-        status: 0,
-        alias: [],
-        rtype: 0,
-        ftype: 0,
-        mvid: 5619681,
-        fee: 8,
-        rUrl: null,
-        isFav: false,
-        isDown: false,
-      }],
+          },
+          duration: 311268,
+          copyrightId: 558010,
+          status: 0,
+          alias: [],
+          rtype: 0,
+          ftype: 0,
+          mvid: 5619681,
+          fee: 8,
+          rUrl: null,
+          isFav: false,
+          isDown: false
+        }
+      ],
       isPlaying: false,
       songUrlGetting: false,
-      songUrlGettingText: '加载中...',
-      curPlayTime: 0,      
-      currentLineNum : 0,
+      songUrlGettingText: "加载中...",
+      curPlayTime: 0,
+      currentLineNum: 0,
       currentLyric: {},
-      curSongLRCText: '正在寻找歌词中...',
+      curSongLRCText: "正在寻找歌词中...",
       timer: null,
       audio: null,
       curSong: {
         listIndex: 0,
         id: 499274374,
-        imgSrc: 'http://p3.music.126.net/uNV6L4oOKP3suDHqnZGclQ==/19147994998024092.jpg',
-        songUrl: 'https://kcalb.wang/musicplayer/songs/chunbai.mp3',
-        songName: '纯白',
-        singer: '双笙',
+        imgSrc:
+          "http://p3.music.126.net/uNV6L4oOKP3suDHqnZGclQ==/19147994998024092.jpg",
+        songUrl: "https://xy.wangxuefeng.com.cn/songs/chunbai.mp3",
+        songName: "纯白",
+        singer: "双笙",
         duration: 312
       },
       curSongAlbum: {
-          name: '专辑名',
-          description: '专辑描述',
-          type: 'EP/Single',
-          subType: '录音室版'
+        name: "专辑名",
+        description: "专辑描述",
+        type: "EP/Single",
+        subType: "录音室版"
       },
       drawer: {
         docked: false,
         open: false
       },
       playerModel: 0,
-      playerModeIcon: 'repeat',
+      playerModeIcon: "repeat",
       isShowLrc: false,
       themes: {
         isLight: false,
-        white: '纯白',
-        light: '湛蓝'
+        white: "纯白",
+        light: "湛蓝"
       },
       isCircle: false,
       snackbar: {
-        position: 'bottom',
-        message: ' ',
+        position: "bottom",
+        message: " ",
         open: false,
         timeout: 3000
       },
       swiper: {},
-      hotSearch: [],
-    }
+      hotSearch: []
+    };
   },
   methods: {
-    setSearch () {
-      this.isSearch = true
+    setSearch() {
+      this.isSearch = true;
     },
-    showAblum () {
-      this.isSearch = false
-      document.querySelector('.player').scrollTop = 0    
+    showAblum() {
+      this.isSearch = false;
+      document.querySelector(".player").scrollTop = 0;
     },
-    showList () {
-      this.isSearch = !this.isSearch
-      document.querySelector('.player').scrollTop = 0    
+    showList() {
+      this.isSearch = !this.isSearch;
+      document.querySelector(".player").scrollTop = 0;
     },
-    falseSearch () {
-      if(this.search === ''){
-        this.isSearch = false
+    falseSearch() {
+      if (this.search === "") {
+        this.isSearch = false;
       }
     },
-    setPlayTimeStart () {
-      clearInterval(this.timer)      
+    setPlayTimeStart() {
+      clearInterval(this.timer);
     },
-    setPlayTimeMove () {
-      this.audio.currentTime = this.curPlayTime
-      if(this.currentLyric){
-        this.currentLyric.seek(this.curPlayTime*1000)
+    setPlayTimeMove() {
+      this.audio.currentTime = this.curPlayTime;
+      if (this.currentLyric) {
+        this.currentLyric.seek(this.curPlayTime * 1000);
       }
     },
-    setPlayTimeEnd () {
-      this.audio.currentTime = this.curPlayTime 
-      this.bindSeekbar()
-      if(this.currentLyric){
-        this.currentLyric.seek(this.curPlayTime*1000)
+    setPlayTimeEnd() {
+      this.audio.currentTime = this.curPlayTime;
+      this.bindSeekbar();
+      if (this.currentLyric) {
+        this.currentLyric.seek(this.curPlayTime * 1000);
       }
     },
-    bindSeekbar () {
+    bindSeekbar() {
       this.timer = setInterval(() => {
-        this.curPlayTime = this.audio.currentTime
-        if(this.curPlayTime === this.curSong.duration){
-          clearInterval(this.timer)
+        this.curPlayTime = this.audio.currentTime;
+        if (this.curPlayTime === this.curSong.duration) {
+          clearInterval(this.timer);
         }
-      }, 100)
+      }, 100);
       this.audio.addEventListener("ended", () => {
-        switch(this.playerModel){
-          case 0: (this.curSong.listIndex === (this.songList.length - 1))? this.playThis(this.songList[0], 0)  : this.nextPlay();break;
-          case 1: (this.pausePlay(), this.audio.currentTime = 0, this.startPlay()); 
-            if(this.currentLyric){
-              this.currentLyric.seek(0)
+        switch (this.playerModel) {
+          case 0:
+            this.curSong.listIndex === this.songList.length - 1
+              ? this.playThis(this.songList[0], 0)
+              : this.nextPlay();
+            break;
+          case 1:
+            this.pausePlay(), (this.audio.currentTime = 0), this.startPlay();
+            if (this.currentLyric) {
+              this.currentLyric.seek(0);
             }
             break;
-          case 2: this.pausePlay(); this.audio.currentTime = 0; let index = parseInt(Math.random()*(this.songList.length - 1));this.playThis(this.songList[index], index);break;
+          case 2:
+            this.pausePlay();
+            this.audio.currentTime = 0;
+            let index = parseInt(Math.random() * (this.songList.length - 1));
+            this.playThis(this.songList[index], index);
+            break;
         }
-      })
+      });
     },
-    downCurSong () {
-      if (confirm(`要开始下载 ${this.curSong.singer} - ${this.curSong.songName} 吗?`)) {
-        this.$refs.download.href = this.curSong.songUrl
-        this.$refs.download.click()
-        this.songList[this.curSong.listIndex].isDown = true
+    downCurSong() {
+      if (
+        confirm(
+          `要开始下载 ${this.curSong.singer} - ${this.curSong.songName} 吗?`
+        )
+      ) {
+        this.$refs.download.href = this.curSong.songUrl;
+        this.$refs.download.click();
+        this.songList[this.curSong.listIndex].isDown = true;
       }
     },
-    startPlay () {
-      this.isPlaying = true
-      this.bindSeekbar()
-    },    
-    pausePlay () {
-      let playPromise = this.$refs.audio.play()
+    startPlay() {
+      this.isPlaying = true;
+      this.bindSeekbar();
+    },
+    pausePlay() {
+      let playPromise = this.$refs.audio.play();
       if (playPromise !== undefined) {
-        playPromise.then( () => {
-          clearInterval(this.timer)
-          this.isPlaying = false
-        }).catch( (error) => {
-          console.dir(error)
-        })
+        playPromise
+          .then(() => {
+            clearInterval(this.timer);
+            this.isPlaying = false;
+          })
+          .catch(error => {
+            console.dir(error);
+          });
       }
     },
-    conPlay () {
-      if(this.isPlaying){
-        this.pausePlay()
-      }else{
-        this.startPlay()
-      }
-      if(this.currentLyric){
-        this.currentLyric.togglePlay()
-      }
-    },
-    changePlayerMode () {
-      let curModel = this.playerModel
-      let icon = ['repeat', 'repeat_one', 'shuffle']
-      let text = ['列表循环', '单曲循环', '随机播放']
-      if(curModel < 2){
-        this.playerModel++        
-      }else{
-        this.playerModel = 0
-      }
-      this.playerModeIcon = icon[this.playerModel]
-      this.openSnackbar(text[this.playerModel], 'bottom')
-    },
-    nextPlay () {
-      let curIndex = this.curSong.listIndex
-      if(curIndex < this.songList.length - 1 && this.playerModel != 2 ){
-        this.playThis(this.songList[curIndex + 1], curIndex + 1)
-      } else if (curIndex < this.songList.length - 1 && this.playerModel === 2 ) {
-        let index = parseInt( Math.random() * (this.songList.length - 1) )
-        this.playThis(this.songList[index], index)
-      }
-    },
-    prevPlay () {
-      let curIndex = this.curSong.listIndex
-      if(curIndex > 0){
-        this.playThis(this.songList[curIndex - 1], curIndex - 1)
-      }else{
-        this.openSnackbar('没有上一曲了', 'bottom')
-      }
-    },
-    playSong (song, index) {
-      let playPromise = this.$refs.audio.play()
-      if (playPromise !== undefined) {
-        this.pausePlay()
-        playPromise.then( () => {
-          let tempSong = {
-            id: song.id,
-            listIndex: index,
-            imgSrc: song.artists[0].img1v1Url,
-            songName: song.name,
-            singer: song.artists[0].name,
-            songUrl: song.songUrl,
-            duration: song.duration/1000
-          }
-          this.curSong = tempSong
-          this.audio.src = this.curSong.songUrl
-        }).catch( (error) => {
-          console.dir(error)
-          if(error.code === 9){
-            this.openSnackbar('无法播放此音乐','top')
-            this.isPlaying = false
-            this.audio.pause()
-            clearInterval(this.timer)
-          }
-        })
-      }   
-    },
-    openSnackbar (msg, pos) {
-      this.snackbar.message = msg
-      this.snackbar.position = pos
-      if (this.snackbar.timer) clearTimeout(this.snackbar.timer);
-      this.snackbar.open = true
-      this.snackbar.timer = setTimeout(() => {
-        this.snackbar.open = false
-      }, this.snackbar.timeout)
-    },    
-    init () {
-      axios.defaults.baseURL = `${this.HOST}:${this.PART}`      
-      this.getAndParseLrc()
-      this.getSongAlbum(this.songList[0])
-      this.audio = this.$refs.audio
-      this.audio.src = this.curSong.songUrl
-      console.dir(this.audio)
-      this.getHotSearch()
-    },
-    initSwiper () {
-      let configSwiper = {
-          pagination: '.swiper-pagination',
-          paginationClickable: true,
-          loop: false,
-          speed: 600,
-          autoplay: false,
-          observer: true, //修改swiper自己或子元素时，自动初始化swiper
-          observeParents: true, //修改swiper的父元素时，自动初始化swiper
-          on: {
-            slideChangeTransitionEnd () {
-              document.querySelector(".player").scrollTop = 0
-            }
-          }
-      }
-      this.swiper = new Swiper('#xy-swiper-container', configSwiper)
-    },
-    getSongAlbum (song) {
-      let config = {
-        method: 'get',
-        url: `/album?id=${song.album.id}`
-      }      
-      axios(config).then((rets) => {
-        if(rets.data.code === 200){
-          this.curSong.imgSrc = rets.data.album.picUrl
-          this.curSongAlbum = rets.data.album
-          if(!this.curSongAlbum.description){
-            this.curSongAlbum.description = '😔 这个歌手很懒，什么都没有写'
-          }
-        }
-      }).catch((rets) => {
-        console.dir(rets);
-      })     
-    },
-    getLRC () {
-      this.currentLineNum = 0
-      this.curSongLRCText = '寻找歌词中...'
-      return new Promise((resolve, reject) => {
-        axios({method: 'get', url: `/lyric?id=${this.curSong.id}`})
-        .then((rets) => {
-          if(rets.data){
-            if(rets.data.nolyric){
-              this.curSongLRCText = '纯音乐，请欣赏'
-            }else{
-              resolve(rets.data.lrc.lyric)
-            }           
-          }else{
-            this.curSongLRCText = '未找到歌词'
-          }         
-        }).catch((rets) => {
-          console.dir(rets)
-          reject(rets)
-        })
-      })
-    },
-    getAndParseLrc () {
-      this.getLRC().then((lyric) => {
-        this.currentLyric = new Lyric(lyric, this.handleLyric)
-        if (this.isPlaying) {
-          this.currentLyric.play()
-        }
-      })
-    },
-    handleLyric ({lineNum, txt}) {
-      this.currentLineNum = lineNum
-      if (lineNum > 5) {
-        let lineEl = this.$refs.lyricLine[lineNum - 5]        
-        // this.$refs.lyricList.scrollToElement(lineEl, 1000)
-        this.$refs.lyricList.$el.style.transform = `translate3d(0, -${this.$refs.lyricLine[lineNum - 5].offsetTop}px, 0px)`
+    conPlay() {
+      if (this.isPlaying) {
+        this.pausePlay();
       } else {
-        this.$refs.lyricList.scrollTo(0, 0, 1000)
+        this.startPlay();
+      }
+      if (this.currentLyric) {
+        this.currentLyric.togglePlay();
+      }
+    },
+    changePlayerMode() {
+      let curModel = this.playerModel;
+      let icon = ["repeat", "repeat_one", "shuffle"];
+      let text = ["列表循环", "单曲循环", "随机播放"];
+      if (curModel < 2) {
+        this.playerModel++;
+      } else {
+        this.playerModel = 0;
+      }
+      this.playerModeIcon = icon[this.playerModel];
+      this.openSnackbar(text[this.playerModel], "bottom");
+    },
+    nextPlay() {
+      let curIndex = this.curSong.listIndex;
+      if (curIndex < this.songList.length - 1 && this.playerModel != 2) {
+        this.playThis(this.songList[curIndex + 1], curIndex + 1);
+      } else if (
+        curIndex < this.songList.length - 1 &&
+        this.playerModel === 2
+      ) {
+        let index = parseInt(Math.random() * (this.songList.length - 1));
+        this.playThis(this.songList[index], index);
+      }
+    },
+    prevPlay() {
+      let curIndex = this.curSong.listIndex;
+      if (curIndex > 0) {
+        this.playThis(this.songList[curIndex - 1], curIndex - 1);
+      } else {
+        this.openSnackbar("没有上一曲了", "bottom");
+      }
+    },
+    playSong(song, index) {
+      let playPromise = this.$refs.audio.play();
+      if (playPromise !== undefined) {
+        this.pausePlay();
+        playPromise
+          .then(() => {
+            let tempSong = {
+              id: song.id,
+              listIndex: index,
+              imgSrc: song.artists[0].img1v1Url,
+              songName: song.name,
+              singer: song.artists[0].name,
+              songUrl: song.songUrl,
+              duration: song.duration / 1000
+            };
+            this.curSong = tempSong;
+            this.audio.src = this.curSong.songUrl;
+          })
+          .catch(error => {
+            console.dir(error);
+            if (error.code === 9) {
+              this.openSnackbar("无法播放此音乐", "top");
+              this.isPlaying = false;
+              this.audio.pause();
+              clearInterval(this.timer);
+            }
+          });
+      }
+    },
+    openSnackbar(msg, pos) {
+      this.snackbar.message = msg;
+      this.snackbar.position = pos;
+      if (this.snackbar.timer) clearTimeout(this.snackbar.timer);
+      this.snackbar.open = true;
+      this.snackbar.timer = setTimeout(() => {
+        this.snackbar.open = false;
+      }, this.snackbar.timeout);
+    },
+    init() {
+      axios.defaults.baseURL = `${this.HOST}:${this.PART}`;
+      this.getAndParseLrc();
+      this.getSongAlbum(this.songList[0]);
+      this.audio = this.$refs.audio;
+      this.audio.src = this.curSong.songUrl;
+      console.dir(this.audio);
+      this.getHotSearch();
+    },
+    initSwiper() {
+      let configSwiper = {
+        pagination: ".swiper-pagination",
+        paginationClickable: true,
+        loop: false,
+        speed: 600,
+        autoplay: false,
+        observer: true, //修改swiper自己或子元素时，自动初始化swiper
+        observeParents: true, //修改swiper的父元素时，自动初始化swiper
+        on: {
+          slideChangeTransitionEnd() {
+            document.querySelector(".player").scrollTop = 0;
+          }
+        }
+      };
+      this.swiper = new Swiper("#xy-swiper-container", configSwiper);
+    },
+    async getSongAlbum(song) {
+      let config = {
+        method: "get",
+        url: `/album?id=${song.album.id}`
+      };
+      let rets = await axios(config);
+      if (rets.data.code === 200) {
+        this.curSong.imgSrc = rets.data.album.picUrl;
+        this.curSongAlbum = rets.data.album;
+        if (!this.curSongAlbum.description) {
+          this.curSongAlbum.description = "😔 这个歌手很懒，什么都没有写";
+        }
+      }
+    },
+    getLRC() {
+      this.currentLineNum = 0;
+      this.curSongLRCText = "寻找歌词中...";
+      return new Promise((resolve, reject) => {
+        axios({ method: "get", url: `/lyric?id=${this.curSong.id}` })
+          .then(rets => {
+            if (rets.data) {
+              if (rets.data.nolyric) {
+                this.curSongLRCText = "纯音乐，请欣赏";
+              } else {
+                resolve(rets.data.lrc.lyric);
+              }
+            } else {
+              this.curSongLRCText = "未找到歌词";
+            }
+          })
+          .catch(rets => {
+            console.dir(rets);
+            reject(rets);
+          });
+      });
+    },
+    getAndParseLrc() {
+      this.getLRC().then(lyric => {
+        this.currentLyric = new Lyric(lyric, this.handleLyric);
+        if (this.isPlaying) {
+          this.currentLyric.play();
+        }
+      });
+    },
+    handleLyric({ lineNum, txt }) {
+      this.currentLineNum = lineNum;
+      if (lineNum > 5) {
+        let lineEl = this.$refs.lyricLine[lineNum - 5];
+        // this.$refs.lyricList.scrollToElement(lineEl, 1000)
+        this.$refs.lyricList.$el.style.transform = `translate3d(0, -${
+          this.$refs.lyricLine[lineNum - 5].offsetTop
+        }px, 0px)`;
+      } else {
+        this.$refs.lyricList.scrollTo(0, 0, 1000);
       }
     },
     // addchip (str) {
@@ -591,110 +619,109 @@ export default {
     //   }
     //   return false
     // },
-    playThis (song, index) {
+    playThis(song, index) {
       let config = {
-        method: 'get',
+        method: "get",
         url: `/music/url?id=${song.id}`
-      }
-      this.songUrlGetting = true
-      this.getSongAlbum(song)
-      axios(config).then((rets) => {
-        if(rets.data.code === 200 && rets.data.data[0].url != null){
-          this.songUrlGetting = false
-          song.songUrl = rets.data.data[0].url
-          this.playSong(song, index)
-        }else{
-          this.songUrlGetting = false
-          this.openSnackbar('很抱歉，没有该音乐版权','top')
-        }
-      }).catch((rets) => {
-        this.songUrlGetting = false
-        this.openSnackbar('检测到网络不稳定','top')
-      })
-    },
-    getHotSearch () {
-      let config = {
-        method: 'get',
-        url: `/search/hot`
-      }
-      axios(config).then((rets) => {
-        if(rets.data.code === 200){
-          this.hotSearch = rets.data.result.hots
-        }
-      }).catch((rets) => {
-        console.dir(rets)
-      })
-    },
-    searchSong () {
-      console.dir(this.search)
-      if(this.search.replace(/(^\s*)|(\s*$)/g, "") === ""){
-        this.openSnackbar('请输入歌曲名或歌手名搜索','top')
-        return
-      }
-      this.searchSongByStr(this.search)
-    },
-    searchSongByStr (str) {
-      this.isSearch = true
-      this.searching = true
-      this.search = str
-      let config = {
-        method: 'get',
-        url: `/search?keywords=${str}`
-      }
-      axios(config).then((rets) => {
-        if(rets.data.code === 200){          
-          this.searching = false
-          this.songList = rets.data.result.songs
-          for (let i = 0; i < this.songList.length; i++) {
-            this.songList[i].isDown = false
-            this.songList[i].isFav = false
+      };
+      this.songUrlGetting = true;
+      this.getSongAlbum(song);
+      axios(config)
+        .then(rets => {
+          if (rets.data.code === 200 && rets.data.data[0].url != null) {
+            this.songUrlGetting = false;
+            song.songUrl = rets.data.data[0].url;
+            this.playSong(song, index);
+          } else {
+            this.songUrlGetting = false;
+            this.openSnackbar("很抱歉，没有该音乐版权", "top");
           }
-        }else{
-          this.searching = false
-          this.openSnackbar('没有搜错到结果','top')
+        })
+        .catch(rets => {
+          this.songUrlGetting = false;
+          this.openSnackbar("检测到网络不稳定", "top");
+        });
+    },
+    async getHotSearch() {
+      let config = {
+        method: "get",
+        url: `/search/hot`
+      };
+      let rets = await axios(config);
+      if (rets.data.code === 200) {
+        this.hotSearch = rets.data.result.hots;
+      }
+    },
+    searchSong() {
+      console.dir(this.search);
+      if (this.search.replace(/(^\s*)|(\s*$)/g, "") === "") {
+        this.openSnackbar("请输入歌曲名或歌手名搜索", "top");
+        return;
+      }
+      this.searchSongByStr(this.search);
+    },
+    async searchSongByStr(str) {
+      this.isSearch = true;
+      this.searching = true;
+      this.search = str;
+      let config = {
+        method: "get",
+        url: `/search?keywords=${str}`
+      };
+      let rets = await axios(config).catch(rets => {
+        this.searching = false;
+        this.openSnackbar("检测到网络不稳定", "top");
+      });
+
+      if (rets.data.code === 200) {
+        this.searching = false;
+        this.songList = rets.data.result.songs;
+        for (let i = 0; i < this.songList.length; i++) {
+          this.songList[i].isDown = false;
+          this.songList[i].isFav = false;
         }
-      }).catch((rets) => {
-        this.searching = false
-        this.openSnackbar('检测到网络不稳定','top')
-      })
+      } else {
+        this.searching = false;
+        this.openSnackbar("没有搜错到结果", "top");
+      }
     }
   },
   components: {
     scroll: Scroll
   },
   watch: {
-    curSong (newSong, oldSong) {
-      if(newSong.id === oldSong.id){
-        return
+    curSong(newSong, oldSong) {
+      if (newSong.id === oldSong.id) {
+        return;
       }
-      if(this.currentLyric){
-        this.currentLyric.stop()
-        this.$refs.lyricList.$el.style.transform = `translate3d(0, 0, 0px)`
+      if (this.currentLyric) {
+        this.currentLyric.stop();
+        this.$refs.lyricList.$el.style.transform = `translate3d(0, 0, 0px)`;
       }
       this.$nextTick(() => {
-        this.getAndParseLrc()
-        this.startPlay()
-      })
+        this.getAndParseLrc();
+        this.startPlay();
+      });
     },
-    isPlaying (newState, oldState) {
-      const audio = this.$refs.audio
+    isPlaying(newState, oldState) {
+      const audio = this.$refs.audio;
       this.$nextTick(() => {
-        newState ? audio.play() : audio.pause()
-      })
-    }    
+        newState ? audio.play() : audio.pause();
+      });
+    }
   },
-  mounted () {
-    this.init()    
-    this.initSwiper()
+  mounted() {
+    this.init();
+    this.initSwiper();
   },
-  updated () {
-    axios.defaults.baseURL = `${this.HOST}:${this.PART}`
+  updated() {
+    axios.defaults.baseURL = `${this.HOST}:${this.PART}`;
   }
-}
+};
 </script>
 
 <style scoped>
-.player{
+.player {
   width: 100%;
   height: 100%;
   padding-bottom: 80px;
@@ -703,7 +730,7 @@ export default {
   padding-top: 56px;
 }
 
-.searchBar{
+.searchBar {
   width: 80%;
   height: 80px;
   line-height: 60px;
@@ -714,44 +741,44 @@ export default {
   transition: all 300ms;
 }
 
-.middleSearch{
+.middleSearch {
   margin-top: 100px;
 }
 
-.searchBarActive{
+.searchBarActive {
   border-radius: 0;
-  margin-top:0;
+  margin-top: 0;
   width: 100%;
 }
 
-.controlButton{
+.controlButton {
   position: fixed;
   bottom: 90px;
   width: 100%;
-  height: 60px;  
+  height: 60px;
   margin: auto;
   transition: all 300ms;
   z-index: 10;
 }
 
-.controlButton button{
+.controlButton button {
   margin: auto 5px;
 }
 
-.controlButtonActive{
+.controlButtonActive {
   bottom: 28px;
   transform: scale(0.68);
 }
 
-.jsutHide{
-  visibility:hidden;  
+.jsutHide {
+  visibility: hidden;
 }
 
-.hideYscroll{
+.hideYscroll {
   overflow-y: hidden;
 }
 
-.bottomPlayer{
+.bottomPlayer {
   background: #fff;
   position: fixed;
   bottom: 0;
@@ -760,58 +787,58 @@ export default {
   z-index: 1;
 }
 
-.LRCContainer{
+.LRCContainer {
   text-align: center;
 }
 
-.span{
+.span {
   animation: rotating 9s linear infinite;
 }
 
-.spanquick{
-   animation: rotating 500ms linear infinite; 
+.spanquick {
+  animation: rotating 500ms linear infinite;
 }
 
 @keyframes rotating {
-    from{
-      -webkit-transform: rotate(0deg);
-      -moz-transform: rotate(0deg);
-      -ms-transform: rotate(0deg);
-      -o-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-    to{
-      -webkit-transform: rotate(360deg);
-      -moz-transform: rotate(360deg);
-      -ms-transform: rotate(360deg);
-      -o-transform: rotate(360deg);
-      transform: rotate(360deg);
-    }
+  from {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 
-.hotSearch{
+.hotSearch {
   text-align: center;
 }
 
-.lyric-wrapper{
+.lyric-wrapper {
   transition: all 300ms;
 }
 
-.hotSearch .mu-button{
+.hotSearch .mu-button {
   margin: 5px;
 }
 
-.gohome{
-  transform: translate3d(0px, 0px, 0px)!important;
+.gohome {
+  transform: translate3d(0px, 0px, 0px) !important;
 }
 
-.swiper-wrapper{
+.swiper-wrapper {
   cursor: pointer;
 }
-.current{
+.current {
   color: #2196f3;
 }
-.borderCircle{
-  border-radius: 30px!important;
+.borderCircle {
+  border-radius: 30px !important;
 }
 </style>
