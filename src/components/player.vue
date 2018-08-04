@@ -246,7 +246,7 @@ export default {
               albumSize: 0,
               picId: 0,
               img1v1Url:
-                "http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+                "://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
               img1v1: 0,
               trans: null
             }
@@ -262,7 +262,7 @@ export default {
               albumSize: 0,
               picId: 0,
               img1v1Url:
-                "http://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+                "://p1.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
               img1v1: 0,
               trans: null
             },
@@ -298,7 +298,7 @@ export default {
         listIndex: 0,
         id: 499274374,
         imgSrc:
-          "http://p3.music.126.net/uNV6L4oOKP3suDHqnZGclQ==/19147994998024092.jpg",
+          "://p3.music.126.net/uNV6L4oOKP3suDHqnZGclQ==/19147994998024092.jpg",
         songUrl: "https://xy.wangxuefeng.com.cn/songs/chunbai.mp3",
         songName: "纯白",
         singer: "双笙",
