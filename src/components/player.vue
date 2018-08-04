@@ -630,7 +630,7 @@ export default {
         .then(rets => {
           if (rets.data.code === 200 && rets.data.data[0].url != null) {
             this.songUrlGetting = false;
-            song.songUrl = rets.data.data[0].url;
+            song.songUrl = rets.data.data[0].url.replace(/^http/, '');
             this.playSong(song, index);
           } else {
             this.songUrlGetting = false;
