@@ -474,7 +474,7 @@ export default {
             let tempSong = {
               id: song.id,
               listIndex: index,
-              imgSrc: song.artists[0].img1v1Url,
+              imgSrc: song.artists[0].img1v1Url.replace(/^http:/, ''),
               songName: song.name,
               singer: song.artists[0].name,
               songUrl: song.songUrl,
@@ -631,7 +631,7 @@ export default {
           if (rets.data.code === 200 && rets.data.data[0].url != null) {
             this.songUrlGetting = false;
             song.songUrl = rets.data.data[0].url.replace(/^http:/, '');
-            console.log(song.songUrl);
+            console.log(`url: ${song.songUrl}`);
             this.playSong(song, index);
           } else {
             this.songUrlGetting = false;
